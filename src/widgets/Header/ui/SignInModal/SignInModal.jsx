@@ -1,18 +1,19 @@
 import { useState } from 'react'
+import { Formik } from 'formik'
 import { Box, Button, Modal, TextField } from '@mui/material'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
+import * as Yup from 'yup'
+
+const SignInSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Required'),
+    password: Yup.string()
+        .min(2, 'Too Short!')
+        .max(50, 'Too Long!')
+        .required('Required'),
+})
 
 function SignInModal() {
     const [open, setOpen] = useState(false)
-
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-
-    const [emailErrorMessage, setEmailErrorMessage] = useState('')
-
-    const [passwordErr, setPasswordErr] = useState(false)
-    const [confirmPasswordErr, setConfirmPasswordErr] = useState(false)
 
     function handleOpen() {
         setOpen(true)
@@ -20,49 +21,6 @@ function SignInModal() {
 
     function handleClose() {
         setOpen(false)
-    }
-
-    function emailValidation() {
-        if (email.length < 3) {
-            setEmailErrorMessage('Email less than 3!!!')
-            return true
-        } else if (email.length > 10) {
-            setEmailErrorMessage('Email more than 10!!!')
-            return true
-        } else {
-            setEmailErrorMessage('')
-            return false
-        }
-    }
-
-    function passwordValidation() {
-        if (password.length < 6) {
-            setPasswordErr(true)
-            return true
-        } else {
-            setPasswordErr(false)
-            return false
-        }
-    }
-
-    function confirmPasswordValidation() {
-        if (password === confirmPassword) {
-            setConfirmPasswordErr(false)
-            return false
-        } else {
-            setConfirmPasswordErr(true)
-            return true
-        }
-    }
-
-    function onSubmit() {
-        let emailE = emailValidation()
-        let passwordE = passwordValidation()
-        let confirmPasswordE = confirmPasswordValidation()
-
-        if (!emailE && !passwordE && !confirmPasswordE) {
-            console.log('HEHEHEHE', email, password, confirmPassword)
-        }
     }
 
     return (
@@ -82,9 +40,6 @@ function SignInModal() {
             >
                 <Box
                     sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
                         position: 'absolute',
                         top: '50%',
                         left: '50%',
@@ -96,50 +51,59 @@ function SignInModal() {
                         p: 4,
                     }}
                 >
-                    <TextField
-                        value={email}
-                        onChange={(e) => {
-                            setEmail(e.target.value)
+                    <Formik
+                        initialValues={{ email: '', password: '' }}
+                        validationSchema={SignInSchema}
+                        onSubmit={(values) => {
+                            console.log(values)
                         }}
-                        id="email"
-                        label="Email"
-                        variant="outlined"
-                    />
-                    {emailErrorMessage ? (
-                        <div>Error: {emailErrorMessage}</div>
-                    ) : null}
-
-                    <TextField
-                        value={password}
-                        onChange={(e) => {
-                            setPassword(e.target.value)
-                        }}
-                        id="password"
-                        label="Password"
-                        variant="outlined"
-                    />
-                    {passwordErr ? <div>Error: password</div> : null}
-
-                    <TextField
-                        value={confirmPassword}
-                        onChange={(e) => {
-                            setConfirmPassword(e.target.value)
-                        }}
-                        id="confirmPassword"
-                        label="Confirm password"
-                        variant="outlined"
-                    />
-                    {confirmPasswordErr ? (
-                        <div>Error: confirm password</div>
-                    ) : null}
-
-                    <Button
-                        onClick={onSubmit}
-                        variant="contained"
-                        disabled={false}
                     >
-                        Sign in
-                    </Button>
+                        {({
+                            values,
+                            errors,
+                            touched,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                        }) => (
+                            <form
+                                onSubmit={handleSubmit}
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '12px',
+                                }}
+                            >
+                                <TextField
+                                    name="email"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.email}
+                                    label="Email"
+                                    variant="outlined"
+                                />
+                                <div style={{ color: 'red' }}>
+                                    {errors.email &&
+                                        touched.email &&
+                                        errors.email}
+                                </div>
+                                <TextField
+                                    name="password"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.password}
+                                    label="Password"
+                                    variant="outlined"
+                                />
+                                {errors.password &&
+                                    touched.password &&
+                                    errors.password}
+                                <Button type="submit" variant="contained">
+                                    Submit
+                                </Button>
+                            </form>
+                        )}
+                    </Formik>
                 </Box>
             </Modal>
         </div>
