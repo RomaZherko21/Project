@@ -4,8 +4,15 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 
 function SignInModal() {
     const [open, setOpen] = useState(false)
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+    const [emailErrorMessage, setEmailErrorMessage] = useState('')
+
+    const [passwordErr, setPasswordErr] = useState(false)
+    const [confirmPasswordErr, setConfirmPasswordErr] = useState(false)
 
     function handleOpen() {
         setOpen(true)
@@ -15,11 +22,46 @@ function SignInModal() {
         setOpen(false)
     }
 
-    function onSubmit() {
-        if (email.length > 3 && password.length > 3) {
-            console.log(email, password)
+    function emailValidation() {
+        if (email.length < 3) {
+            setEmailErrorMessage('Email less than 3!!!')
+            return true
+        } else if (email.length > 10) {
+            setEmailErrorMessage('Email more than 10!!!')
+            return true
         } else {
-            console.log('error')
+            setEmailErrorMessage('')
+            return false
+        }
+    }
+
+    function passwordValidation() {
+        if (password.length < 6) {
+            setPasswordErr(true)
+            return true
+        } else {
+            setPasswordErr(false)
+            return false
+        }
+    }
+
+    function confirmPasswordValidation() {
+        if (password === confirmPassword) {
+            setConfirmPasswordErr(false)
+            return false
+        } else {
+            setConfirmPasswordErr(true)
+            return true
+        }
+    }
+
+    function onSubmit() {
+        let emailE = emailValidation()
+        let passwordE = passwordValidation()
+        let confirmPasswordE = confirmPasswordValidation()
+
+        if (!emailE && !passwordE && !confirmPasswordE) {
+            console.log('HEHEHEHE', email, password, confirmPassword)
         }
     }
 
@@ -63,6 +105,10 @@ function SignInModal() {
                         label="Email"
                         variant="outlined"
                     />
+                    {emailErrorMessage ? (
+                        <div>Error: {emailErrorMessage}</div>
+                    ) : null}
+
                     <TextField
                         value={password}
                         onChange={(e) => {
@@ -72,6 +118,21 @@ function SignInModal() {
                         label="Password"
                         variant="outlined"
                     />
+                    {passwordErr ? <div>Error: password</div> : null}
+
+                    <TextField
+                        value={confirmPassword}
+                        onChange={(e) => {
+                            setConfirmPassword(e.target.value)
+                        }}
+                        id="confirmPassword"
+                        label="Confirm password"
+                        variant="outlined"
+                    />
+                    {confirmPasswordErr ? (
+                        <div>Error: confirm password</div>
+                    ) : null}
+
                     <Button
                         onClick={onSubmit}
                         variant="contained"
