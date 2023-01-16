@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom'
 import { Box, Button } from '@mui/material'
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
 import { ROUTES } from 'shared/consts'
 
-import { SignInModal } from './ui'
+import { SignInModal, SignUpModal } from './ui'
 
 function Header() {
     return (
@@ -19,9 +18,7 @@ function Header() {
             </Box>
             <Box sx={{ display: 'flex', gap: '20px' }}>
                 <SignInModal />
-                <Button variant="contained" endIcon={<ExitToAppIcon />}>
-                    Sign up
-                </Button>
+                <SignUpModal />
             </Box>
         </Box>
     )

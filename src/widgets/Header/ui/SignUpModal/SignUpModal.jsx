@@ -1,20 +1,29 @@
 import { useState } from 'react'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { Box, Button, Modal } from '@mui/material'
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
+import { Box, Button, MenuItem, Modal } from '@mui/material'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
-import { FormInput } from 'shared/ui'
+import { FormInput, FormSelect } from 'shared/ui'
 
-const SignInSchema = Yup.object().shape({
+const SignUpSchema = Yup.object().shape({
+    name: Yup.string()
+        .min(2, 'Too Short!')
+        .max(20, 'Too Long!')
+        .required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string()
         .min(2, 'Too Short!')
         .max(50, 'Too Long!')
         .required('Required'),
+    confirmPassword: Yup.string().oneOf(
+        [Yup.ref('password')],
+        'Passwords must match'
+    ),
+    gender: Yup.string().required('Required'),
 })
 
-function SignInModal() {
+function SignUpModal() {
     const [open, setOpen] = useState(false)
 
     function handleOpen() {
@@ -29,10 +38,10 @@ function SignInModal() {
         <div>
             <Button
                 onClick={handleOpen}
-                variant="outlined"
-                endIcon={<AssignmentIndIcon />}
+                variant="contained"
+                endIcon={<ExitToAppIcon />}
             >
-                Sign in
+                Sign up
             </Button>
             <Modal
                 open={open}
@@ -54,8 +63,15 @@ function SignInModal() {
                     }}
                 >
                     <Formik
-                        initialValues={{ email: '', password: '' }}
-                        validationSchema={SignInSchema}
+                        initialValues={{
+                            name: '',
+                            email: '',
+                            password: '',
+                            confirmPassword: '',
+                            gender: '',
+                            age: '',
+                        }}
+                        validationSchema={SignUpSchema}
                         onSubmit={(values) => {
                             console.log(values)
                         }}
@@ -69,8 +85,31 @@ function SignInModal() {
                                     gap: '12px',
                                 }}
                             >
+                                <FormInput name="name" />
                                 <FormInput name="email" />
                                 <FormInput name="password" />
+                                <FormInput
+                                    name="confirmPassword"
+                                    label="Confirm password"
+                                />
+
+                                <FormSelect
+                                    name="gender"
+                                    options={[
+                                        { key: 'Man', value: 'M' },
+                                        { key: 'Women', value: 'W' },
+                                    ]}
+                                />
+
+                                <FormSelect
+                                    name="age"
+                                    options={[
+                                        { key: 'Ten', value: 10 },
+                                        { key: 'Twenty', value: 20 },
+                                        { key: 'Thirty', value: 30 },
+                                    ]}
+                                />
+
                                 <Button type="submit" variant="contained">
                                     Submit
                                 </Button>
@@ -83,4 +122,4 @@ function SignInModal() {
     )
 }
 
-export default SignInModal
+export default SignUpModal
