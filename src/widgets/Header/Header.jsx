@@ -12,8 +12,8 @@ function Header() {
                 <Link to={ROUTES.HOME}>
                     <Button>Home</Button>
                 </Link>
-                <Link to={ROUTES.POSTS}>
-                    <Button>Posts</Button>
+                <Link to={ROUTES.STATS}>
+                    <Button>Stats</Button>
                 </Link>
             </Box>
             <Box sx={{ display: 'flex', gap: '20px' }}>
