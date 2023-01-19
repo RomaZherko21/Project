@@ -1,34 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { LinearProgress } from '@mui/material'
 
 import { Table } from './ui'
-import axios from 'axios'
-
-const STATS_URL =
-    'https://datausa.io/api/data?drilldowns=Nation&measures=Population'
+import { StatsModel } from './model'
+import { observer } from 'mobx-react-lite'
 
 function Stats() {
-    const [stats, setStats] = useState([])
-    const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        setLoading(true)
-        axios.get(STATS_URL).then((res) => {
-            setStats(res.data.data)
-            setLoading(false)
-        })
-    }, [])
-
     return (
         <>
             <h1>Stats</h1>
-            {loading ? (
+            {StatsModel.loading ? (
                 <LinearProgress color="secondary" />
             ) : (
-                <Table stats={stats} />
+                <Table stats={StatsModel.stats} />
             )}
         </>
     )
 }
 
-export default Stats
+export default observer(Stats)

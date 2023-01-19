@@ -22,7 +22,7 @@ function Table({ stats }) {
                 <TableBody>
                     {stats.map((item) => (
                         <TableRow
-                            key={item['ID Nation']}
+                            key={item.Year}
                             sx={{
                                 '&:last-child td, &:last-child th': {
                                     border: 0,
