@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { LinearProgress } from '@mui/material'
 
 import { Table } from './ui'
