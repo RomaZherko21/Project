@@ -7,24 +7,11 @@ import {
     LinearProgress,
     Typography,
 } from '@mui/material'
-import axios from 'axios'
-import { useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
-const URL = 'https://www.boredapi.com/api/activity'
+import { HomeModel } from './model'
 
 function Home() {
-    const [action, setAction] = useState({})
-    const [loading, setLoading] = useState(false)
-
-    const getAction = () => {
-        setLoading(true)
-
-        axios.get(URL).then((res) => {
-            setAction(res.data)
-            setLoading(false)
-        })
-    }
-
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
@@ -32,21 +19,21 @@ function Home() {
                 image="https://www.atatus.com/blog/content/images/size/w960/2021/08/HTTP-Request-with-Axios.jpeg"
                 title="axios"
             />
-            {loading ? (
+            {HomeModel.loading ? (
                 <LinearProgress color="secondary" />
             ) : (
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        {action.type}
+                        {HomeModel.action.type}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {action.activity}
+                        {HomeModel.action.activity}
                     </Typography>
                 </CardContent>
             )}
 
             <CardActions>
-                <Button size="small" onClick={getAction}>
+                <Button size="small" onClick={() => HomeModel.getAction()}>
                     Get new action
                 </Button>
             </CardActions>
@@ -54,4 +41,4 @@ function Home() {
     )
 }
 
-export default Home
+export default observer(Home)

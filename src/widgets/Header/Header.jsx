@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
-import { Box, Button } from '@mui/material'
+import { observer } from 'mobx-react-lite'
+import { Box, Button, Typography } from '@mui/material'
 
 import { ROUTES } from 'shared/consts'
+import { UserModel } from 'models'
 
 import { SignInModal, SignUpModal } from './ui'
 
@@ -16,6 +18,8 @@ function Header() {
                     <Button>Stats</Button>
                 </Link>
             </Box>
+            <Typography>{UserModel.email}</Typography>
+            <Typography>{UserModel.population}</Typography>
             <Box sx={{ display: 'flex', gap: '20px' }}>
                 <SignInModal />
                 <SignUpModal />
@@ -24,4 +28,4 @@ function Header() {
     )
 }
 
-export default Header
+export default observer(Header)

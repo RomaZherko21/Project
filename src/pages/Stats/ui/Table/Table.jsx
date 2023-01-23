@@ -1,4 +1,5 @@
 import {
+    Button,
     Paper,
     Table as MuiTable,
     TableBody,
@@ -7,6 +8,7 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material'
+import { UserModel } from 'models'
 
 function Table({ stats }) {
     return (
@@ -17,6 +19,7 @@ function Table({ stats }) {
                         <TableCell>ID Nation</TableCell>
                         <TableCell align="right">Year</TableCell>
                         <TableCell align="right">Population</TableCell>
+                        <TableCell align="right">Action</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -35,6 +38,15 @@ function Table({ stats }) {
                             <TableCell align="right">{item.Year}</TableCell>
                             <TableCell align="right">
                                 {item.Population}
+                            </TableCell>
+                            <TableCell align="right">
+                                <Button
+                                    onClick={() => {
+                                        UserModel.population = item.Population
+                                    }}
+                                >
+                                    Copy!
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}

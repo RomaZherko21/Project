@@ -5,6 +5,7 @@ import { Box, Button, Modal } from '@mui/material'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 
 import { FormInput } from 'shared/ui'
+import { UserModel } from 'models'
 
 const SignInSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -24,6 +25,8 @@ function SignInModal() {
     function handleClose() {
         setOpen(false)
     }
+
+    console.log(UserModel)
 
     return (
         <div>
@@ -57,7 +60,7 @@ function SignInModal() {
                         initialValues={{ email: '', password: '' }}
                         validationSchema={SignInSchema}
                         onSubmit={(values) => {
-                            console.log(values)
+                            UserModel.signIn(values)
                         }}
                     >
                         {({ handleSubmit }) => (
