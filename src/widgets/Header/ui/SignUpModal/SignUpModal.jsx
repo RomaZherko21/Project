@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { Box, Button, MenuItem, Modal } from '@mui/material'
+import { Box, Button, Modal } from '@mui/material'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
 import { FormInput, FormSelect } from 'shared/ui'

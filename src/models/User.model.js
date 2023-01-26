@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
 class UserModel {
-    email = 'Not authorised!'
+    email = ''
 
     password = ''
 
@@ -14,6 +14,24 @@ class UserModel {
     signIn({ email, password }) {
         this.email = email
         this.password = password
+    }
+
+    logOut() {
+        this.email = ''
+        this.password = ''
+    }
+
+    isLoggedIn() {
+        return Boolean(this.email)
+    }
+
+    changeInfo({ email, password }) {
+        if (this.email !== email) {
+            this.email = email
+        }
+        if (this.password !== password) {
+            this.password = password
+        }
     }
 }
 
