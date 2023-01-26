@@ -6,13 +6,11 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 
 import { FormInput } from 'shared/ui'
 import { UserModel } from 'models'
+import { emailValidation, passwordValidation } from 'shared/helpers'
 
 const SignInSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string()
-        .min(2, 'Too Short!')
-        .max(50, 'Too Long!')
-        .required('Required'),
+    email: emailValidation(),
+    password: passwordValidation(),
 })
 
 function SignInModal() {

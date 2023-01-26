@@ -7,13 +7,15 @@ import * as Yup from 'yup'
 import { FormInput } from 'shared/ui'
 import { UserModel } from 'models'
 import { ROUTES } from 'shared/consts'
+import { emailValidation, passwordValidation } from 'shared/helpers'
 
 const SignInSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string()
+    name: Yup.string()
         .min(2, 'Too Short!')
-        .max(50, 'Too Long!')
+        .max(20, 'Too Long!')
         .required('Required'),
+    email: emailValidation(),
+    password: passwordValidation(),
 })
 
 function Profile() {
@@ -29,6 +31,7 @@ function Profile() {
         >
             <Formik
                 initialValues={{
+                    name: UserModel.name,
                     email: UserModel.email,
                     password: UserModel.password,
                 }}
@@ -46,6 +49,7 @@ function Profile() {
                             gap: '12px',
                         }}
                     >
+                        <FormInput name="name" />
                         <FormInput name="email" />
                         <FormInput name="password" />
                         <Button type="submit" variant="contained">

@@ -5,17 +5,16 @@ import { Box, Button, Modal } from '@mui/material'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
 import { FormInput, FormSelect } from 'shared/ui'
+import { UserModel } from 'models'
+import { emailValidation, passwordValidation } from 'shared/helpers'
 
 const SignUpSchema = Yup.object().shape({
     name: Yup.string()
         .min(2, 'Too Short!')
         .max(20, 'Too Long!')
         .required('Required'),
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string()
-        .min(2, 'Too Short!')
-        .max(50, 'Too Long!')
-        .required('Required'),
+    email: emailValidation(),
+    password: passwordValidation(),
     confirmPassword: Yup.string().oneOf(
         [Yup.ref('password')],
         'Passwords must match'
@@ -73,7 +72,7 @@ function SignUpModal() {
                         }}
                         validationSchema={SignUpSchema}
                         onSubmit={(values) => {
-                            console.log(values)
+                            UserModel.signUp(values)
                         }}
                     >
                         {({ handleSubmit }) => (

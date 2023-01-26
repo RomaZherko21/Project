@@ -5,6 +5,12 @@ class UserModel {
 
     password = ''
 
+    name = ''
+
+    gender = ''
+
+    age = 0
+
     population = 0
 
     constructor() {
@@ -16,6 +22,14 @@ class UserModel {
         this.password = password
     }
 
+    signUp({ email, password, name, gender, age }) {
+        this.email = email
+        this.password = password
+        this.name = name
+        this.gender = gender
+        this.age = age
+    }
+
     logOut() {
         this.email = ''
         this.password = ''
@@ -25,7 +39,10 @@ class UserModel {
         return Boolean(this.email)
     }
 
-    changeInfo({ email, password }) {
+    changeInfo({ email, password, name }) {
+        if (this.name !== name) {
+            this.name = name
+        }
         if (this.email !== email) {
             this.email = email
         }
