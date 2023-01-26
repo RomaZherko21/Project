@@ -1,5 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
+const STORAGE_USER = 'user'
+
 class UserModel {
     email = ''
 
@@ -15,14 +17,19 @@ class UserModel {
 
     constructor() {
         makeAutoObservable(this)
+
+        this.init()
     }
 
-    signIn({ email, password }) {
-        this.email = email
-        this.password = password
+    init() {
+        if (localStorage.getItem(STORAGE_USER)) {
+            const values = JSON.parse(localStorage.getItem(STORAGE_USER))
+
+            this.fromJSON(values)
+        }
     }
 
-    signUp({ email, password, name, gender, age }) {
+    fromJSON({ email, password, name, gender, age }) {
         this.email = email
         this.password = password
         this.name = name
@@ -30,9 +37,22 @@ class UserModel {
         this.age = age
     }
 
+    signIn({ email, password }) {
+        this.email = email
+        this.password = password
+    }
+
+    signUp(values) {
+        this.fromJSON(values)
+
+        localStorage.setItem(STORAGE_USER, JSON.stringify(values))
+    }
+
     logOut() {
         this.email = ''
         this.password = ''
+
+        localStorage.removeItem(STORAGE_USER)
     }
 
     isLoggedIn() {

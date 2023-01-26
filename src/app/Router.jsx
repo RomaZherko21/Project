@@ -10,12 +10,12 @@ function Router() {
         <Routes>
             <Route path={ROUTES.HOME} element={<Home />} />
             <Route path={ROUTES.STATS} element={<Stats />} />
-            <Route path="*" element={<NotFound />} />
             {UserModel.isLoggedIn() && (
                 <>
                     <Route path={ROUTES.PROFILE} element={<Profile />} />
                 </>
             )}
+            <Route path="*" element={<NotFound />} />
         </Routes>
     )
 }
